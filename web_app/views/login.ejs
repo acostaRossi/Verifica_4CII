@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stats</title>
+    <title>Login</title>
     <style>
         .container {
             text-align: center;
@@ -29,6 +29,9 @@
             border-radius: 20px;
             margin: 20px;
         }
+        .row {
+            margin: 20px;
+        }
     </style>
 </head>
 <body>
@@ -41,35 +44,28 @@
 
         <span style="float: right;">
             Benvenuto ( Mario Rossi )
-            <img style="height: 50px;" src="/images/logout.png">
+            <a href="/logout">
+                <img style="height: 50px;" src="/images/logout.png">
+            </a>
         </span>
 
     </div>
     <div class="container">
-        <div>
-            <div class="blocco_arancione">
-                <p>Cantanti</br>Totale</p>
-                <%= cantantiTot %>
+
+        <form action="" method="post">
+            <div class="row">
+                Email
+                <input required type="email" name="email">
             </div>
-            <div class="blocco_arancione">
-                <p>Cantanti</br>Femmine</p>
-                <%= cantantiF %>
+            <div class="row">
+                Password
+                <input required type="password" name="password">
             </div>
-            <div class="blocco_arancione">
-                <p>Media</br>Like</p>
-                <%= mediaLike %>
+            <div class="row">
+                <input type="submit" value="Login">
             </div>
-        </div>
-        <div>
-            <div class="blocco_arancione">
-                <p>Canzone</br>con più Like</p>
-                <%= titoloLikeMaggiore %>
-            </div>
-            <div class="blocco_arancione">
-                <p>Canzoni</br>od</p>
-                <%= canzoniOD %>
-            </div>
-        </div>
+        </form>
+
     </div>
 </body>
 </html>

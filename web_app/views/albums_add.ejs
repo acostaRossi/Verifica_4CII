@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stats</title>
+    <title>New Album</title>
     <style>
         .container {
             text-align: center;
@@ -29,6 +29,9 @@
             border-radius: 20px;
             margin: 20px;
         }
+        .row {
+            margin: 20px;
+        }
     </style>
 </head>
 <body>
@@ -46,30 +49,29 @@
 
     </div>
     <div class="container">
-        <div>
-            <div class="blocco_arancione">
-                <p>Cantanti</br>Totale</p>
-                <%= cantantiTot %>
+
+        <form action="" method="post">
+            <div class="row">
+                Titolo
+                <input type="text" name="titolo">
             </div>
-            <div class="blocco_arancione">
-                <p>Cantanti</br>Femmine</p>
-                <%= cantantiF %>
+            <div class="row">
+                Anno
+                <input type="number" name="anno">
             </div>
-            <div class="blocco_arancione">
-                <p>Media</br>Like</p>
-                <%= mediaLike %>
+            <div class="row">
+                Genere
+                <input type="text" name="genere">
             </div>
-        </div>
-        <div>
-            <div class="blocco_arancione">
-                <p>Canzone</br>con più Like</p>
-                <%= titoloLikeMaggiore %>
+            <div class="row">
+                Cantante
+                <input type="number" name="cantante">
             </div>
-            <div class="blocco_arancione">
-                <p>Canzoni</br>od</p>
-                <%= canzoniOD %>
+            <div class="row">
+                <input type="submit" value="Aggiungi">
             </div>
-        </div>
+        </form>
+        
     </div>
 </body>
 </html>

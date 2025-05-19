@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Album</title>
+    <title>Login</title>
     <style>
         .container {
             text-align: center;
@@ -18,6 +18,19 @@
         .imgCantante {
             width: 70px;
             height: 70px;
+        }
+        .blocco_arancione {
+            background-color: orange;
+            color: #000;
+            width: 100px;
+            display: inline-block;
+            padding: 20px;
+            font-size: 20px;
+            border-radius: 20px;
+            margin: 20px;
+        }
+        .row {
+            margin: 20px;
         }
     </style>
 </head>
@@ -35,16 +48,10 @@
         </span>
 
     </div>
-    <a style="float: right;" href="/new-album">Aggiungi album</a>
     <div class="container">
-        <% album.forEach((alb) => { %>
-        <div>
-            <a href="/albums/<%= alb.id %>">
-                <p><%= alb.titolo %></p>
-                <p><%= alb.genere %></p>
-            </a>
-        </div>
-        <% }) %>
+
+        <h1>Area Protetta</h1>
+        
     </div>
 </body>
 </html>
