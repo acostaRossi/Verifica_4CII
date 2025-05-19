@@ -30,21 +30,24 @@
         </span>
 
         <span style="float: right;">
-            Benvenuto ( Mario Rossi )
             <img style="height: 50px;" src="/images/logout.png">
         </span>
 
     </div>
     <a style="float: right;" href="/new-album">Aggiungi album</a>
     <div class="container">
+        <table style="display: inline-block;">
+            <tr>
+                <td>Titolo</td>
+                <td>Genere</td>
+            </tr>
         <% album.forEach((alb) => { %>
-        <div>
-            <a href="/albums/<%= alb.id %>">
-                <p><%= alb.titolo %></p>
-                <p><%= alb.genere %></p>
-            </a>
-        </div>
+            <tr>
+                <td><a href="/albums/<%= alb.id %>"><%= alb.titolo %></a></td>
+                <td><%= alb.genere_musicale %></td>
+            </tr>
         <% }) %>
+        </table>
     </div>
 </body>
 </html>

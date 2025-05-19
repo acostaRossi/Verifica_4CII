@@ -13,7 +13,6 @@ app.set('view engine', 'ejs');
 const db = mysql.createConnection({
     database : "rossify",
     host: '10.211.55.3',
-    //host: '127.0.0.1',
     user: 'root',
     password: ''
 });
@@ -30,39 +29,57 @@ const portNumber = 3000;
 const ipAddress = "127.0.0.1";
 
 app.get(['/', '/home'], (req, res) => {
-    res.render('home', { } );
+
+    let email = getEmailFromCookie(req);
+
+    if(email) {
+        db.query("SELECT * FROM utenti WHERE email = ?", [ email ],
+        (err, results) => {
+            if(err) {
+                console.log(err);
+            } else {
+                const nomeUtente = results[0].nome + " " + results[0].cognome;
+                res.render('home', { nomeUtente: nomeUtente } );
+            }
+        });
+    } else {
+        res.render('home', { nomeUtente: "" } );
+    }
 });
 
 app.get('/cantanti', (req, res) => {
 
     const sql = "SELECT * FROM cantanti";
     db.query(sql, (err, results) => {
-
-        console.log(results);
-
         res.render('cantanti', { cantanti: results });
     });
 });
 
-app.get('/albums', authMiddleware, (req, res) => {
+app.get('/albums', (req, res) => {
     const sql = "SELECT * FROM album";
     db.query(sql, (err, results) => {
-
-        console.log(results);
-
         res.render('albums', { album: results });
     });
 });
 
 app.get('/new-album', (req, res) => {
-    res.render('albums_add', { } );
+
+    let email = getEmailFromCookie(req);
+
+    if(email) {
+        db.query("SELECT * FROM utenti WHERE email = ?", [ email ],
+        (err, results) => {
+            if(err) {
+                console.log(err);
+            } else {
+                const nomeUtente = results[0].nome + " " + results[0].cognome;
+                res.render('albums_add', { nomeUtente: nomeUtente } );
+            }
+        });
+    }
 });
 
-app.get('/login', (req, res) => {
-
-    getNomeUtente();
-    
-    
+app.get('/login', async (req, res) => {
     res.render('login', { } );
 });
 
@@ -70,39 +87,34 @@ let sessions = {};
 
 function authMiddleware(req, res, next) {
 
-    let cookie = req.headers.cookie;
-    console.log(cookie);
-
-    let cookiArr = cookie.split("=");
-
-    // sessionId=869ca01957138a470f6fbd31bb4e28c2
-
-    // sasasakj
-
-    let email = sessions[cookiArr[1]];
-
-    if(email){
-
-        console.log(email);
-
+    if(getEmailFromCookie(req)){
         next();
     } else {
-
         res.status(401).send("User not logged");
     }
 }
 
-function getNomeUtente(email) {
+function getEmailFromCookie(req) {
 
-    const sql = "SELECT * FROM utenti WHERE email = ?";
-    db.query(sql, (err, results) => {
+    let cookie = req.headers.cookie;
+    if(!cookie) return "";
+    let cookiArr = cookie.split("=");
+    let email = sessions[cookiArr[1]];
 
-        return results[0].nome + results[0].cognome
-    });
+    return email;
 }
 
 app.get('/protected', authMiddleware, (req, res) => {
-    res.render('protected', { } );
+
+    db.query("SELECT * FROM utenti WHERE email = ?", [ getEmailFromCookie(req) ],
+    (err, results) => {
+        if(err) {
+            console.log(err);
+        } else {
+            const nomeUtente = results[0].nome + " " + results[0].cognome;
+            res.render('protected', { nomeUtente: nomeUtente } );
+        }
+    });
 });
 
 app.post('/login', (req, res) => {
@@ -118,8 +130,6 @@ app.post('/login', (req, res) => {
         if(err) {
             console.log(err);
         } else {
-
-            console.log(results);
             if(results.length > 0) {
 
                 let token;
@@ -135,15 +145,11 @@ app.post('/login', (req, res) => {
             res.redirect('/home');
         }
     });
-
-    
 });
 
 app.get('/logout', (req, res) => {
 
     let cookie = req.headers.cookie;
-    console.log(cookie);
-
     let cookiArr = cookie.split("=");
 
     delete sessions[cookiArr[1]];
@@ -211,6 +217,3 @@ app.get('/stats', (req, res) => {
 app.listen(portNumber, ipAddress, () => {
     console.log(`Server avviato su http://${ipAddress}:${portNumber}/`);
 });
-
-//res.setHeader('Set-Cookie',`sessionId=${sessionId}; HttpOnly`);
-//token = crypto.randomBytes(16).toString('hex');
